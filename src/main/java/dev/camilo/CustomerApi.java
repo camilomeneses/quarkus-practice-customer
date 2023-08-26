@@ -72,7 +72,8 @@ public class CustomerApi {
             v2.forEach(p -> {
               /* recorremos los streams y verificamos los ids de los products del customer
               * y los ids del stream de products*/
-              if (product.getId().equals(p.getId())) {
+
+              if (product.getProduct().toString().equals(p.getId().toString())) {
                 /* llenamos los valores con los products correspondientes*/
                 product.setName(p.getName());
                 product.setDescription(p.getDescription());
@@ -117,7 +118,7 @@ public class CustomerApi {
   }
 
   private Uni<List<Product>> getAllProducts() {
-    return webClient.get(9090, "localhost", "/product").send()
+    return webClient.get(9090, "localhost", "/products").send()
         .onFailure().invoke(response -> log.error("Error recuperando productos", response))
         .onItem().transform(response -> {
           List<Product> lista = new ArrayList<>();
