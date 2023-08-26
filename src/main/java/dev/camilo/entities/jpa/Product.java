@@ -1,4 +1,4 @@
-package dev.camilo.entities;
+package dev.camilo.entities.jpa;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonInclude;

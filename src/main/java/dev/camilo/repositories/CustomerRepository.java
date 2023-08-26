@@ -1,35 +1,52 @@
 package dev.camilo.repositories;
 
-import dev.camilo.entities.Customer;
-import dev.camilo.entities.Product;
+import com.blazebit.persistence.CriteriaBuilder;
+import com.blazebit.persistence.CriteriaBuilderFactory;
+import com.blazebit.persistence.view.EntityViewManager;
+import com.blazebit.persistence.view.EntityViewSetting;
+import dev.camilo.entities.jpa.Customer;
+import dev.camilo.entities.jpa.Product;
+import dev.camilo.entities.view.CustomerView;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @ApplicationScoped
 public class CustomerRepository {
   @Inject
-  EntityManager em;
+  EntityManager entityManager;
+
+  @Inject
+  CriteriaBuilderFactory criteriaBuilderFactory;
+
+  @Inject
+  EntityViewManager entityViewManager;
 
   @Transactional
   public void createdCustomer(Customer customer){
-    em.persist(customer);
+    entityManager.persist(customer);
   }
   @Transactional
   public void deleteCustomer(Customer customer){
-    em.remove(em.contains(customer) ? customer : em.merge(customer));
+    entityManager.remove(entityManager.contains(customer) ? customer : entityManager.merge(customer));
   }
   @Transactional
-  public List<Customer> listCustomer(){
-    List<Customer> customers = em.createQuery("select p from Customer p").getResultList();
+  public List<CustomerView> listCustomer(){
+    CriteriaBuilder<Customer> criteriaBuilder = criteriaBuilderFactory
+        .create(entityManager, Customer.class);
+
+    List<CustomerView> customers = entityViewManager.applySetting(EntityViewSetting.create(CustomerView.class), criteriaBuilder)
+        .getResultList();
+
     return customers;
   }
   @Transactional
   public Customer findCustomer(Long id){
-    return em.find(Customer.class, id);
+    return entityManager.find(Customer.class, id);
   }
   @Transactional
   public Customer updateCustomer(Long id, Customer customer) {
@@ -41,7 +58,7 @@ public class CustomerRepository {
     // Actualizar los campos del Customer con los nuevos valores
     existingCustomer.setNames(customer.getNames());
     existingCustomer.setAccountNumber(customer.getAccountNumber());
-    existingCustomer.setSurename(customer.getSurename());
+    existingCustomer.setSurname(customer.getSurname());
     existingCustomer.setPhone(customer.getPhone());
     existingCustomer.setAddress(customer.getAddress());
 
@@ -52,19 +69,19 @@ public class CustomerRepository {
     for (Product newProduct : customer.getProducts()) {
       // Si el producto ya existe en la base de datos, actualizar su referencia
       if (newProduct.getId() != null) {
-        Product existingProduct = em.find(Product.class, newProduct.getId());
+        Product existingProduct = entityManager.find(Product.class, newProduct.getId());
         if (existingProduct != null) {
           existingProduct.setCustomer(existingCustomer);
         }
       } else {
         // Si el producto es nuevo, persistirlo y establecer la referencia
         newProduct.setCustomer(existingCustomer);
-        em.persist(newProduct);
+        entityManager.persist(newProduct);
       }
     }
 
     // Actualizar el Customer y retornar el resultado
-    return em.merge(existingCustomer);
+    return entityManager.merge(existingCustomer);
   }
 
 }

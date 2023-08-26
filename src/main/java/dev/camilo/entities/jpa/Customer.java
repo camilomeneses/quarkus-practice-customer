@@ -1,4 +1,4 @@
-package dev.camilo.entities;
+package dev.camilo.entities.jpa;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -16,7 +16,7 @@ public class Customer {
   private Long id;
   private String accountNumber;
   private String names;
-  private String surename;
+  private String surname;
   private String phone;
   private String address;
   @OneToMany(

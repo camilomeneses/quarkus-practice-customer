@@ -3,8 +3,9 @@ package dev.camilo;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import dev.camilo.entities.Customer;
-import dev.camilo.entities.Product;
+import dev.camilo.entities.jpa.Customer;
+import dev.camilo.entities.jpa.Product;
+import dev.camilo.entities.view.CustomerView;
 import dev.camilo.repositories.CustomerRepository;
 import io.smallrye.common.annotation.Blocking;
 import io.smallrye.mutiny.Uni;
@@ -45,7 +46,7 @@ public class CustomerApi {
 
   @GET
   @Blocking
-  public List<Customer> list() {
+  public List<CustomerView> list() {
     return customerRepository.listCustomer();
   }
 
@@ -71,7 +72,7 @@ public class CustomerApi {
             v2.forEach(p -> {
               /* recorremos los streams y verificamos los ids de los products del customer
               * y los ids del stream de products*/
-              if (Objects.equals(product.getId(), p.getId())) {
+              if (product.getId().equals(p.getId())) {
                 /* llenamos los valores con los products correspondientes*/
                 product.setName(p.getName());
                 product.setDescription(p.getDescription());
