@@ -45,10 +45,6 @@
     </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-orm-rest-data-panache</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-reactive-jackson</artifactId>
     </dependency>
     <dependency>
@@ -64,16 +60,6 @@
       <artifactId>quarkus-jdbc-postgresql</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.blazebit</groupId>
-      <artifactId>blaze-persistence-integration-quarkus-3</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.blazebit</groupId>
-      <artifactId>blaze-persistence-integration-hibernate-6.2</artifactId>
-      <version>1.6.9</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-spring-di</artifactId>
     </dependency>
@@ -82,6 +68,20 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-reactive-panache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-reactive-pg-client</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-hibernate-validator</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -160,14 +160,6 @@
         <skipITs>false</skipITs>
         <quarkus.package.type>native</quarkus.package.type>
       </properties>
-      <dependencies>
-        <dependency>
-          <groupId>com.blazebit</groupId>
-          <artifactId>blaze-persistence-entity-view-processor</artifactId>
-          <version>1.6.9</version>
-          <scope>provided</scope>
-        </dependency>
-      </dependencies>
     </profile>
   </profiles>
 </project>
