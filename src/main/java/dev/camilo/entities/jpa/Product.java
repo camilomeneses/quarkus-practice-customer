@@ -22,6 +22,7 @@ public class Product extends PanacheEntity {
   @JsonBackReference
   private Customer customer;
   @Column
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   private Long product;
   @Transient
   @JsonInclude(JsonInclude.Include.NON_NULL)
